@@ -1,8 +1,8 @@
 # Calculator
 
-A calculator web app built with Vite and tested end-to-end with Playwright.
+A calculator web app built with Vite and tested end-to-end with Python + Behave + Playwright.
 
-The main purpose of this project is to demonstrate behavior-driven testing of a UI app using BDD Feature files (Gherkin) plus Playwright step definitions and a Page Object Model.
+The main purpose of this project is to demonstrate behavior-driven testing of a UI app using BDD Feature files (Gherkin) with Python step definitions, Behave as the BDD engine, and Playwright for browser automation through a Page Object Model.
 
 All application code and all tests in this repository were written 100% by GitHub Copilot.
 
