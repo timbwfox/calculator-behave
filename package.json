@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node ./src/run-tests.js",
+    "test:e2e": "python -m behave tests/e2e/features",
     "test:behave": "python -m behave tests/e2e/features"
   },
   "dependencies": {

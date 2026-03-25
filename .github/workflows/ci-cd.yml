@@ -30,11 +30,19 @@ jobs:
           node-version: 24
           cache: npm
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        run: python -m playwright install --with-deps chromium
 
       - name: Build app
         run: npm run build
@@ -49,9 +57,28 @@ jobs:
       - name: Run e2e tests
         shell: bash
         run: |
-          set -o pipefail
+          set -euo pipefail
           mkdir -p artifacts/logs
-          npm run test:e2e 2>&1 | tee artifacts/logs/e2e-tests.log
+
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [[ -z "${REPO_NAME}" || "${REPO_NAME}" == *.github.io ]]; then
+            BASE_PATH="/"
+          else
+            BASE_PATH="/${REPO_NAME}/"
+          fi
+
+          BASE_URL="http://127.0.0.1:4173${BASE_PATH}"
+          npm run preview -- --host 127.0.0.1 --port 4173 > artifacts/logs/preview.log 2>&1 &
+
+          for i in {1..30}; do
+            if curl -fsS "${BASE_URL}" > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          curl -fsS "${BASE_URL}" > /dev/null
+          BASE_URL="${BASE_URL}" npm run test:e2e 2>&1 | tee artifacts/logs/e2e-tests.log
 
       - name: Upload test artifacts
         if: always()
