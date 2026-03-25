@@ -14,11 +14,13 @@ This entire README file was created and is maintained via GitHub Copilot.
 
 - Node.js 24+
 - npm 11+
+- Python 3.10+
 
 ## Install
 
 ```bash
 npm install
+python -m pip install -r requirements.txt
 ```
 
 ## Run Locally
@@ -41,22 +43,10 @@ Run unit tests:
 npm test
 ```
 
-Generate BDD tests from feature files:
-
-```bash
-npm run bddgen
-```
-
-Run E2E tests (BDD + Playwright):
+Run E2E tests (Behave + Playwright):
 
 ```bash
 npm run test:e2e
-```
-
-Run E2E tests in headed mode:
-
-```bash
-npm run test:e2e:headed
 ```
 
 ## CI/CD
@@ -83,7 +73,6 @@ calculator/
 	.github/
 		workflows/
 			ci-cd.yml
-	public/
 	src/
 		styles/
 			main.css
@@ -91,22 +80,22 @@ calculator/
 		calculator.js
 		calculator-app.js
 		calculator-engine.js
-		calculator.test.js
-		calculator.unit.test.js
-		calculator.buttons.test.js
 		main.js
-		run-tests.js
 	tests/
+		unit/
+			js_bridge.mjs
+			test_calculator.py
 		e2e/
 			features/
 				calculator.feature
-			steps/
-				calculator.steps.js
-			pages/
-				calculator.page.js
-			calculator.spec.js
+				environment.py
+				pages/
+					calculator_page.py
+				steps/
+					calculator_steps.py
 	index.html
-	playwright.config.js
+	behave.ini
+	requirements.txt
 	package.json
 	package-lock.json
 	.gitignore
