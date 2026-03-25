@@ -10,7 +10,8 @@
     "test": "node ./src/run-tests.js",
     "bddgen": "npx bddgen",
     "test:e2e": "npx bddgen && playwright test",
-    "test:e2e:headed": "npx bddgen && playwright test --headed"
+    "test:e2e:headed": "npx bddgen && playwright test --headed",
+    "test:behave": "python -m behave"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
