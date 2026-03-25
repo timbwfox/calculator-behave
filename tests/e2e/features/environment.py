@@ -6,11 +6,6 @@ def before_all(context):
     context.browser = context.playwright.chromium.launch(headless=True)
 
 
-def after_all(context):
-    context.browser.close()
-    context.playwright.stop()
-
-
 def before_scenario(context, scenario):
     context.browser_context = context.browser.new_context()
     context.page = context.browser_context.new_page()
@@ -19,3 +14,8 @@ def before_scenario(context, scenario):
 def after_scenario(context, scenario):
     context.page.close()
     context.browser_context.close()
+
+
+def after_all(context):
+    context.browser.close()
+    context.playwright.stop()

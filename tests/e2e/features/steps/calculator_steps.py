@@ -1,9 +1,8 @@
 from behave import given, when, then
-from features.pages.calculator_page import CalculatorPage
+from pages.calculator_page import CalculatorPage
 
 
 def parse_button_sequence(sequence):
-    """Parse button sequence string, treating '+/-' as a single token."""
     buttons = []
     i = 0
     while i < len(sequence):
@@ -29,5 +28,5 @@ def step_press_buttons(context, button_sequence):
 
 
 @then('the display shows "{result}"')
-def step_assert_display(context, result):
+def step_assert_result(context, result):
     context.calculator.assert_result(result)
