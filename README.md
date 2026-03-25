@@ -80,11 +80,12 @@ calculator/
 		calculator.js
 		calculator-app.js
 		calculator-engine.js
+		calculator.test.js
+		calculator.unit.test.js
+		calculator.buttons.test.js
+		run-tests.js
 		main.js
 	tests/
-		unit/
-			js_bridge.mjs
-			test_calculator.py
 		e2e/
 			features/
 				calculator.feature
