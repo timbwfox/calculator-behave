@@ -60,9 +60,7 @@ GitHub Actions workflow:
 - Uploads test artifacts for each run (`test-artifacts`), including:
 	- unit test log: `artifacts/logs/unit-tests.log`
 	- e2e test log: `artifacts/logs/e2e-tests.log`
-	- Playwright JSON + JUnit reports: `artifacts/e2e/`
-	- Playwright HTML report: `playwright-report/`
-	- Playwright runtime output: `test-results/`
+	- preview server log: `artifacts/logs/preview.log`
 
 Workflow file: `.github/workflows/ci-cd.yml`
 

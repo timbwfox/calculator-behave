@@ -87,8 +87,6 @@ jobs:
           name: test-artifacts
           path: |
             artifacts
-            playwright-report
-            test-results
           if-no-files-found: warn
           overwrite: true
 
