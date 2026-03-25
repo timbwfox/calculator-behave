@@ -1,0 +1,24 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node ./src/run-tests.js",
+    "bddgen": "npx bddgen",
+    "test:e2e": "npx bddgen && playwright test",
+    "test:e2e:headed": "npx bddgen && playwright test --headed"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.32.3",
+    "playwright-bdd": "^8.4.1",
+    "vite": "^2.9.18"
+  }
+}

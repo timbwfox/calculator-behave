@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light border-bottom shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="#">Calculator</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#topNav"
+          aria-controls="topNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://bsky.app" target="_blank" rel="noreferrer">Bluesky</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-5 d-flex justify-content-center" id="app">
+      <div style="
+        width: 300px;
+        background: #c8cbcf;
+        border-radius: 12px;
+        box-shadow: 4px 4px 12px #888, -2px -2px 6px #fff;
+        padding: 16px;
+        font-family: 'Courier New', monospace;
+      ">
+
+        <!-- Display -->
+        <div style="
+          background: #a8c090;
+          border: 2px inset #6a8a60;
+          border-radius: 6px;
+          padding: 10px 12px;
+          margin-bottom: 14px;
+          text-align: right;
+          box-shadow: inset 2px 2px 6px #5a7a50;
+        ">
+          <div id="expression" style="font-size: 0.7rem; color: #3a5a30; min-height: 1rem; letter-spacing: 1px;"></div>
+          <div id="result" style="font-size: 2rem; font-weight: bold; color: #1a3a10; letter-spacing: 2px;">0</div>
+        </div>
+
+        <!-- Button grid -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+
+          <!-- Row 1: utility -->
+          <button class="calc-btn calc-fn" data-button="C">C</button>
+          <button class="calc-btn calc-fn" data-button="+/-">+/-</button>
+          <button class="calc-btn calc-fn" data-button="%">%</button>
+          <button class="calc-btn calc-op" data-button="/">/</button>
+
+          <!-- Row 2 -->
+          <button class="calc-btn calc-num" data-button="7">7</button>
+          <button class="calc-btn calc-num" data-button="8">8</button>
+          <button class="calc-btn calc-num" data-button="9">9</button>
+          <button class="calc-btn calc-op" data-button="x">x</button>
+
+          <!-- Row 3 -->
+          <button class="calc-btn calc-num" data-button="4">4</button>
+          <button class="calc-btn calc-num" data-button="5">5</button>
+          <button class="calc-btn calc-num" data-button="6">6</button>
+          <button class="calc-btn calc-op" data-button="-">-</button>
+
+          <!-- Row 4 -->
+          <button class="calc-btn calc-num" data-button="1">1</button>
+          <button class="calc-btn calc-num" data-button="2">2</button>
+          <button class="calc-btn calc-num" data-button="3">3</button>
+          <button class="calc-btn calc-op" data-button="+">+</button>
+
+          <!-- Row 5: zero spans 2 cols -->
+          <button class="calc-btn calc-num" data-button="0" style="grid-column: span 2;">0</button>
+          <button class="calc-btn calc-num" data-button=".">.</button>
+          <button class="calc-btn calc-eq" data-button="=">=</button>
+        </div>
+      </div>
+    </main>
+
+    <style>
+      .calc-btn {
+        border: none;
+        border-radius: 8px;
+        padding: 16px 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+        font-family: 'Courier New', monospace;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px #888, -1px -1px 3px #fff;
+        transition: box-shadow 0.08s, transform 0.08s;
+      }
+      .calc-btn:active {
+        box-shadow: inset 1px 1px 3px #777;
+        transform: translateY(1px);
+      }
+      .calc-num  { background: #e8e8e8; color: #1a1a1a; }
+      .calc-fn   { background: #b0b8c8; color: #1a1a1a; }
+      .calc-op   { background: #e09030; color: #fff; }
+      .calc-eq   { background: #e09030; color: #fff; }
+    </style>
+
+    <script type="module" src="./src/main.js"></script>
+    <script>
+      // Fallback for environments where ES module scripts do not load
+      // (for example opening index.html directly without a dev server).
+      if (typeof window.calcDigit !== "function") {
+        function add(a, b) {
+          return a + b;
+        }
+
+        function subtract(a, b) {
+          return a - b;
+        }
+
+        let display = "0";
+        let operand = null;
+        let operator = null;
+        let waitNext = false;
+
+        function updateDisplay(val) {
+          display = String(val);
+          document.getElementById("result").textContent = display;
+        }
+
+        function calcDigit(d) {
+          if (waitNext) {
+            display = d;
+            waitNext = false;
+          } else {
+            display = display === "0" ? d : display + d;
+          }
+          document.getElementById("result").textContent = display;
+        }
+
+        function calcDot() {
+          if (waitNext) {
+            display = "0.";
+            waitNext = false;
+          } else if (!display.includes(".")) {
+            display += ".";
+          }
+          document.getElementById("result").textContent = display;
+        }
+
+        function applyOp(a, op, b) {
+          if (op === "+") return add(a, b);
+          if (op === "-") return subtract(a, b);
+          if (op === "×") return a * b;
+          if (op === "÷") return b !== 0 ? a / b : "Error";
+          return b;
+        }
+
+        function calcOp(op) {
+          const current = parseFloat(display);
+          if (operand !== null && !waitNext) {
+            const res = applyOp(operand, operator, current);
+            updateDisplay(res);
+            document.getElementById("expression").textContent =
+              operand + " " + operator + " " + current + " =";
+            operand = res;
+          } else {
+            operand = current;
+          }
+          operator = op;
+          waitNext = true;
+        }
+
+        function calcEquals() {
+          if (operand === null || operator === null) return;
+          const current = parseFloat(display);
+          const res = applyOp(operand, operator, current);
+          document.getElementById("expression").textContent =
+            operand + " " + operator + " " + current + " =";
+          updateDisplay(res);
+          operand = null;
+          operator = null;
+          waitNext = true;
+        }
+
+        function calcClear() {
+          display = "0";
+          operand = null;
+          operator = null;
+          waitNext = false;
+          document.getElementById("result").textContent = "0";
+          document.getElementById("expression").textContent = "";
+        }
+
+        function calcToggleSign() {
+          updateDisplay(parseFloat(display) * -1);
+        }
+
+        function calcPercent() {
+          updateDisplay(parseFloat(display) / 100);
+        }
+
+        document.getElementById("app").addEventListener("click", function (event) {
+          const button = event.target.closest("button");
+          if (!button) return;
+
+          const buttonValue = button.dataset.button;
+
+          if (/^\d$/.test(buttonValue)) {
+            calcDigit(buttonValue);
+            return;
+          }
+
+          if (["+", "-", "−", "*", "×", "/", "÷"].includes(buttonValue)) {
+            const op = buttonValue === "−" ? "-" : buttonValue === "*" ? "×" : buttonValue === "/" ? "÷" : buttonValue;
+            calcOp(op);
+            return;
+          }
+
+          if (buttonValue === ".") calcDot();
+          if (buttonValue === "=") calcEquals();
+          if (buttonValue === "C") calcClear();
+          if (buttonValue === "+/−") calcToggleSign();
+          if (buttonValue === "%") calcPercent();
+        });
+
+        window.calcDigit = calcDigit;
+        window.calcDot = calcDot;
+        window.calcOp = calcOp;
+        window.calcEquals = calcEquals;
+        window.calcClear = calcClear;
+        window.calcToggleSign = calcToggleSign;
+        window.calcPercent = calcPercent;
+      }
+    </script>
+  </body>
+</html>
