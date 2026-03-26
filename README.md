@@ -59,7 +59,10 @@ GitHub Actions workflow:
 - Uploads the build artifact (`dist`)
 - Uploads test artifacts for each run (`test-artifacts`), including:
 	- unit test log: `artifacts/logs/unit-tests.log`
+	- unit test HTML report: `artifacts/unit/unit-tests.html`
 	- e2e test log: `artifacts/logs/e2e-tests.log`
+	- BDD test HTML report: `artifacts/e2e/behave-report.html`
+	- BDD JUnit XML details: `artifacts/e2e/junit/`
 	- preview server log: `artifacts/logs/preview.log`
 
 Workflow file: `.github/workflows/ci-cd.yml`

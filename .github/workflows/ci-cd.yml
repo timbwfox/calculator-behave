@@ -53,12 +53,13 @@ jobs:
           set -o pipefail
           mkdir -p artifacts/logs
           npm test 2>&1 | tee artifacts/logs/unit-tests.log
+          npm run test:unit:html
 
       - name: Run e2e tests
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p artifacts/logs
+          mkdir -p artifacts/logs artifacts/e2e
 
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
           if [[ -z "${REPO_NAME}" || "${REPO_NAME}" == *.github.io ]]; then
@@ -78,7 +79,7 @@ jobs:
           done
 
           curl -fsS "${BASE_URL}" > /dev/null
-          BASE_URL="${BASE_URL}" npm run test:e2e 2>&1 | tee artifacts/logs/e2e-tests.log
+          BASE_URL="${BASE_URL}" npm run test:e2e:html 2>&1 | tee artifacts/logs/e2e-tests.log
 
       - name: Upload test artifacts
         if: always()

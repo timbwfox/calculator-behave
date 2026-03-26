@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node ./src/run-tests.js",
+    "test": "mocha src/calculator.unit.test.js src/calculator.buttons.test.js",
+    "test:unit:html": "mocha src/calculator.unit.test.js src/calculator.buttons.test.js --reporter mochawesome --reporter-options reportDir=artifacts/unit,reportFilename=unit-tests,quiet=true,html=true,json=true",
     "test:e2e": "python -m behave tests/e2e/features",
-    "test:behave": "python -m behave tests/e2e/features"
+    "test:behave": "python -m behave tests/e2e/features",
+    "test:e2e:html": "python -m behave tests/e2e/features -f pretty -f behave_html_formatter:HTMLFormatter -o artifacts/e2e/behave-report.html --junit --junit-directory artifacts/e2e/junit"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -17,6 +19,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.32.3",
+    "mocha": "^11.7.2",
+    "mochawesome": "^7.1.4",
     "vite": "^2.9.18"
   }
 }
